@@ -9,7 +9,7 @@ const orderRoutes = require('./routes/order.router');
 
 const app = express();
 app.use(cors({
-  origin: 'https://orms-frontend-fad5xtj1u-ganesh-kumars-projects-cfdf3ac6.vercel.app',
+  origin: 'https://orms-frontend.vercel.app',
   credentials: true
 }));
 app.use(express.json());
