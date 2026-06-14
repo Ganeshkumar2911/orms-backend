@@ -2,7 +2,7 @@ const express = require('express');
 const orderController = require('../controllers/order.controller');
 const authMiddleware = require('../middlewares/auth.middleware');
 const allowRoles = require('../middlewares/role.middleware');
-const { createOrderValidation, dispatchOrderValidation, cancelOrderValidation } = require('../validators/order.validator');
+const { createOrderValidation, dispatchOrderValidation, cancelOrderValidation, updateOrderValidation } = require('../validators/order.validator');
 const validate = require('../middlewares/validation.middleware');
 
 const router = express.Router();
@@ -76,6 +76,17 @@ router.patch(
     cancelOrderValidation,
     validate,
     orderController.cancelOrder
+);
+router.patch(
+    "/update/:id",
+    authMiddleware.authUser,
+    allowRoles(
+        "deepak_admin",
+        "deepak_staff"
+    ),
+    updateOrderValidation,
+    validate,
+    orderController.updateOrder
 );
 
 module.exports = router;

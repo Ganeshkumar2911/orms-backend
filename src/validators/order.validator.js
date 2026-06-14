@@ -59,8 +59,43 @@ const cancelOrderValidation = [
         .withMessage("Cancellation cancelReason is required")
 ];
 
+const updateOrderValidation = [
+
+    body("party")
+        .notEmpty()
+        .withMessage("Party is required"),
+
+    body("transport")
+        .notEmpty()
+        .withMessage("Transport is required"),
+
+    body("items")
+        .isArray({ min: 1 })
+        .withMessage(
+            "At least one item is required"
+        ),
+
+    body("items.*.product")
+        .notEmpty()
+        .withMessage("Product is required"),
+
+    body("items.*.orderedQty")
+        .isNumeric()
+        .withMessage(
+            "Ordered quantity must be numeric"
+        ),
+
+    body("items.*.price")
+        .isNumeric()
+        .withMessage(
+            "Price must be numeric"
+        )
+
+];
+
 module.exports = {
     createOrderValidation,
     cancelOrderValidation,
-    dispatchOrderValidation
+    dispatchOrderValidation,
+    updateOrderValidation
 };

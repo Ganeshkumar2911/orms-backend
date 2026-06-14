@@ -341,6 +341,98 @@ async function cancelOrder(req, res) {
     });
 }
 
+async function updateOrder(req, res) {
+
+    const { id } = req.params;
+
+    const {
+        party,
+        transport,
+        items
+    } = req.body;
+
+    const order = await orderModel.findById(id);
+
+    if (!order) {
+        return res.status(404).json({
+            message: "Order not found"
+        });
+    }
+
+    if (order.status !== "CREATED") {
+        return res.status(400).json({
+            message: "Only CREATED orders can be updated"
+        });
+    }
+
+    // Validate Party
+
+    const partyExists =
+        await partyModel.findById(party);
+
+    if (!partyExists || !partyExists.isActive) {
+        return res.status(404).json({
+            message: "Party not found or inactive"
+        });
+    }
+
+    // Validate Transport
+
+    const transportExists =
+        await transportModel.findById(transport);
+
+    if (
+        !transportExists ||
+        !transportExists.isActive
+    ) {
+        return res.status(404).json({
+            message: "Transport not found or inactive"
+        });
+    }
+
+    // Validate Products
+
+    const productIds =
+        items.map(item => item.product);
+
+    const products =
+        await productModel.find({
+            _id: {
+                $in: productIds
+            }
+        });
+
+    if (products.length !== productIds.length) {
+        return res.status(404).json({
+            message: "One or more products not found"
+        });
+    }
+
+    const inactiveProducts =
+        products.filter(
+            product => !product.isActive
+        );
+
+    if (inactiveProducts.length > 0) {
+        return res.status(400).json({
+            message: "One or more products are inactive"
+        });
+    }
+
+    // Update Order
+
+    order.party = party;
+    order.transport = transport;
+    order.items = items;
+
+    await order.save();
+
+    res.status(200).json({
+        message: "Order updated successfully",
+        order
+    });
+}
+
 
 module.exports = {
 
@@ -350,5 +442,6 @@ module.exports = {
     approveOrder,
     executeOrder,
     dispatchOrder,
-    cancelOrder
+    cancelOrder,
+    updateOrder
 }
