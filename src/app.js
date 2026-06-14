@@ -11,8 +11,14 @@ const dashboardRoutes = require("./routes/dashboard.router");
 const app = express();
 
 const corsOptions = {
-  origin: true,
+  origin: function (origin, callback) {
+    // allow requests with no origin (e.g. mobile apps, curl)
+    if (!origin) return callback(null, true);
+    return callback(null, true);
+  },
   credentials: true,
+  methods: ['GET','HEAD','PUT','PATCH','POST','DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
