@@ -6,6 +6,7 @@ const productRoutes = require('./routes/product.router');
 const partyRoutes = require('./routes/party.router');
 const transportRoutes = require('./routes/transport.router');
 const orderRoutes = require('./routes/order.router');
+const dashboardRoutes = require('./routes/dashboard.router')
 
 const app = express();
 app.use(cors({
@@ -20,6 +21,7 @@ app.use('/api/product', productRoutes);
 app.use('/api/party', partyRoutes);
 app.use('/api/transport', transportRoutes);
 app.use('/api/order', orderRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 
 module.exports = app
