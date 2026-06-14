@@ -53,10 +53,10 @@ const dispatchOrderValidation = [
 ];
 
 const cancelOrderValidation = [
-    body("remark")
+    body("cancelReason")
         .trim()
         .notEmpty()
-        .withMessage("Cancellation remark is required")
+        .withMessage("Cancellation cancelReason is required")
 ];
 
 module.exports = {

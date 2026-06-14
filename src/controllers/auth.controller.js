@@ -21,9 +21,14 @@ async function loginUser(req, res) {
     const token = jwt.sign({
         id: user._id,
         role: user.role,
-    }, process.env.JWT_SECRET)
+    }, process.env.JWT_SECRET, { expiresIn: '7d' }); // Add expiry
 
-    res.cookie("token", token)
+    res.cookie('token', token, {
+        // httpOnly: true,
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // FIX: lax in dev, none in prod
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
 
     res.status(200).json({ message: 'Login successful' });
 
@@ -34,7 +39,7 @@ async function logoutUser(req, res) {
     res.status(200).json({ message: 'Logout successful' });
 }
 
-async function getUser( req, res) {
+async function getUser(req, res) {
 
     const user = await userModel.findById(req.user.id).select('-password');
 

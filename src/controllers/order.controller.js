@@ -90,7 +90,7 @@ async function getOrders(req, res) {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
     const status = req.query.status;
-    const party = req.query.party;
+    const partyId = req.query.partyId;
     const search = req.query.search || "";
 
     const skip = (page - 1) * limit;
@@ -107,8 +107,8 @@ async function getOrders(req, res) {
     if (status) {
         filter.status = status;
     }
-    if (party) {
-        filter.party = party;
+    if (partyId) {
+        filter.party = partyId;
     }
 
     const fromDate = req.query.fromDate;
@@ -308,7 +308,7 @@ async function dispatchOrder(req, res) {
 async function cancelOrder(req, res) {
 
     const { id } = req.params;
-    const { remark } = req.body;
+    const { cancelReason } = req.body;
 
     const order = await orderModel.findById(id);
 
@@ -331,7 +331,7 @@ async function cancelOrder(req, res) {
     order.status = "CANCELLED";
     order.cancelledBy = req.user.id;
     order.cancelledAt = new Date();
-    order.remark = remark;
+    order.cancelReason = cancelReason;
 
     await order.save();
 

@@ -67,6 +67,8 @@ async function getParties(req, res) {
 async function updateParty(req, res) {
     const { id } = req.params;
 
+    const { name, address } = req.body;
+
     const existingParty = await partyModel.findOne({
         _id: { $ne: id },
         name: {
