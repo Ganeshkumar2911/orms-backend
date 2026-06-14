@@ -16,6 +16,13 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+// Vercel/Express5 friendly preflight handling (avoid wildcard route patterns)
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
+
 // app.options('*', cors(corsOptions));
 
 app.use(express.json());
