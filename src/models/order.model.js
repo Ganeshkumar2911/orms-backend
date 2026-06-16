@@ -68,7 +68,7 @@ const orderSchema = new mongoose.Schema(
                 "CREATED",
                 "APPROVED",
                 "EXECUTED",
-                "PARTIALLY_DISPATCHED",
+                // "PARTIALLY_DISPATCHED",
                 "COMPLETED",
                 "CANCELLED",
             ],

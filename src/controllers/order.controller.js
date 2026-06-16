@@ -57,8 +57,8 @@ async function createOrder(req, res) {
 
     const lastOrder = await orderModel
         .findOne()
-        .sort({ createdAt: -1 });
-
+        .sort({ orderNumber: -1 });
+        
     if (!lastOrder) {
         orderNumber = "ORD-0001";
     } else {
@@ -250,11 +250,10 @@ async function dispatchOrder(req, res) {
     }
 
     if (
-        order.status !== "EXECUTED" &&
-        order.status !== "PARTIALLY_DISPATCHED"
+        order.status !== "EXECUTED"
     ) {
         return res.status(400).json({
-            message: "Only EXECUTED or PARTIALLY_DISPATCHED orders can be dispatched"
+            message: "Only EXECUTED orders can be dispatched"
         });
     }
 
@@ -291,9 +290,10 @@ async function dispatchOrder(req, res) {
 
     if (isCompleted) {
         order.status = "COMPLETED";
-    } else {
-        order.status = "PARTIALLY_DISPATCHED";
     }
+    // } else {
+    //     order.status = "PARTIALLY_DISPATCHED";
+    // }
 
     order.lastDispatchedAt = new Date();
 

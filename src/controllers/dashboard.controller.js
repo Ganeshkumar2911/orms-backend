@@ -18,12 +18,7 @@ async function getDashboard(req, res) {
         }),
 
         orderModel.countDocuments({
-            status: {
-                $in: [
-                    "EXECUTED",
-                    "PARTIALLY_DISPATCHED"
-                ]
-            }
+            status: "EXECUTED"
         }),
 
         orderModel.countDocuments({
@@ -52,7 +47,7 @@ async function getDashboard(req, res) {
                     "CREATED",
                     "APPROVED",
                     "EXECUTED",
-                    "PARTIALLY_DISPATCHED"
+                    // "PARTIALLY_DISPATCHED"
                 ]
             },
             updatedAt: {
@@ -89,12 +84,7 @@ async function getDashboard(req, res) {
 
     const pendingDispatchOrders = await orderModel
         .find({
-            status: {
-                $in: [
-                    "EXECUTED",
-                    "PARTIALLY_DISPATCHED"
-                ]
-            }
+            status: "EXECUTED"
         })
         .select(
             "orderNumber party status"
