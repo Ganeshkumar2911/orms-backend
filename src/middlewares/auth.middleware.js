@@ -4,6 +4,10 @@ async function authUser(req, res, next) {
 
     const token = req.cookies.token;
 
+    console.log("Cookies:", req.cookies);
+    console.log("Token:", req.cookies?.token);
+    console.log("JWT Secret:", !!process.env.JWT_SECRET);
+
     if (!token) {
         return res.status(401).json({
             success: false,
