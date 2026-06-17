@@ -11,7 +11,7 @@ const dashboardRoutes = require('./routes/dashboard.router')
 const app = express();
 
 app.use(cors({
-  origin: 'https://frontend-oms.vercel.app/',
+  origin: 'https://frontend-oms.vercel.app',
   credentials: true
 }));
 
