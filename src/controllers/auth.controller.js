@@ -35,8 +35,15 @@ async function loginUser(req, res) {
 }
 
 async function logoutUser(req, res) {
-    res.clearCookie('token');
-    res.status(200).json({ message: 'Logout successful' });
+
+    res.clearCookie('token', {
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === 'production',
+    });
+
+    res.status(200).json({
+        message: 'Logout successful'
+    });
 }
 
 async function getUser(req, res) {
