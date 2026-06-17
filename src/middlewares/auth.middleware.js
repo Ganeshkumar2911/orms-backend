@@ -8,6 +8,9 @@ async function authUser(req, res, next) {
     console.log("Token:", req.cookies?.token);
     console.log("JWT Secret:", !!process.env.JWT_SECRET);
 
+    console.log("Origin:", req.headers.origin);
+    console.log("Cookie Header:", req.headers.cookie);
+
     if (!token) {
         return res.status(401).json({
             success: false,
