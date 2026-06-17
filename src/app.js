@@ -9,10 +9,17 @@ const orderRoutes = require('./routes/order.router');
 const dashboardRoutes = require('./routes/dashboard.router')
 
 const app = express();
+
 app.use(cors({
-  origin: 'https://orms-frontend.vercel.app',
+  origin: 'https://frontend-oms.vercel.app/',
   credentials: true
 }));
+
+// app.use(cors({
+//   origin: true,
+//   credentials: true
+// }));
+
 app.use(express.json());
 app.use(cookieParser());
 
