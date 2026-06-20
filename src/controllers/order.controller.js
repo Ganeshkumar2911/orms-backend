@@ -2,6 +2,7 @@ const  orderModel = require("../models/order.model");
 const partyModel = require("../models/party.model");
 const transportModel = require("../models/transport.model");
 const productModel = require("../models/product.model");
+const { getIO } = require("../socket/index");
 
 async function createOrder(req, res) {
 
@@ -78,7 +79,7 @@ async function createOrder(req, res) {
         items,
         createdBy: req.user.id,
     });
-
+    const io = getIO();
     res.status(201).json({
         message: "Order created successfully",
         order,
@@ -179,6 +180,7 @@ async function getOrderById(req, res) {
 async function approveOrder(req, res) {
 
     const { id } = req.params;
+    const io = getIO();
 
     const order = await orderModel.findById(id);
 
@@ -200,6 +202,14 @@ async function approveOrder(req, res) {
 
     await order.save();
 
+    io.to("deepak_staff").emit("order-approved", {
+        orderId: order._id,
+    });
+
+    io.to("naveen_admin").emit("order-approved", {
+        orderId: order._id,
+    });
+
     res.status(200).json({
         message: "Order approved successfully",
         order
@@ -209,6 +219,7 @@ async function approveOrder(req, res) {
 async function executeOrder(req, res) {
 
     const { id } = req.params;
+    const io = getIO();
 
     const order = await orderModel.findById(id);
 
@@ -230,6 +241,18 @@ async function executeOrder(req, res) {
 
     await order.save();
 
+    io.to("deepak_staff").emit("order-executed", {
+        orderId: order._id,
+    });
+
+    io.to("deepak_admin").emit("order-executed", {
+        orderId: order._id,
+    });
+
+    io.to("naveen_staff").emit("order-executed", {
+        orderId: order._id,
+    });
+
     res.status(200).json({
         message: "Order executed successfully",
         order
@@ -240,6 +263,7 @@ async function dispatchOrder(req, res) {
 
     const { id } = req.params;
     const { items } = req.body;
+    const io = getIO();
 
     const order = await orderModel.findById(id);
 
@@ -299,6 +323,18 @@ async function dispatchOrder(req, res) {
 
     await order.save();
 
+    io.to("deepak_admin").emit("order-dispatched", {
+        orderId: order._id,
+    });
+
+    io.to("naveen_staff").emit("order-dispatched", {
+        orderId: order._id,
+    });
+
+    io.to("deepak_staff").emit("order-dispatched", {
+        orderId: order._id,
+    });
+
     res.status(200).json({
         message: "Order dispatched successfully",
         order
@@ -309,6 +345,7 @@ async function cancelOrder(req, res) {
 
     const { id } = req.params;
     const { cancelReason } = req.body;
+    const io = getIO();
 
     const order = await orderModel.findById(id);
 
@@ -334,6 +371,14 @@ async function cancelOrder(req, res) {
     order.cancelReason = cancelReason;
 
     await order.save();
+
+    io.to("deepak_admin").emit("order-cancel", {
+        orderId: order._id,
+    });
+
+    io.to("deepak_staff").emit("order-cancel", {
+        orderId: order._id,
+    });
 
     res.status(200).json({
         message: "Order cancelled successfully",
