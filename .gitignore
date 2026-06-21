@@ -42,3 +42,6 @@ coverage/
 
 # Ignore build output
 dist/
+
+# Ignore service account files
+src/config/service-account.json

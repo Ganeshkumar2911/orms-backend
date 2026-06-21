@@ -60,8 +60,33 @@ async function getUser(req, res) {
     }
 }
 
+async function saveFCMToken(req, res) {
+
+    const { token } = req.body;
+
+    if (!token) {
+        return res.status(400).json({
+            message: "FCM token is required"
+        });
+    }
+
+    const user = await userModel.findById(req.user.id);
+
+    if (user.fcmToken !== token) {
+
+        user.fcmToken = token;
+
+        await user.save();
+    }
+
+    res.status(200).json({
+        message: "FCM token saved successfully"
+    });
+}
+
 module.exports = {
     loginUser,
     logoutUser,
     getUser,
+    saveFCMToken,
 }

@@ -4,12 +4,12 @@ async function authUser(req, res, next) {
 
     const token = req.cookies.token;
 
-    console.log("Cookies:", req.cookies);
-    console.log("Token:", req.cookies?.token);
-    console.log("JWT Secret:", !!process.env.JWT_SECRET);
+    // console.log("Cookies:", req.cookies);
+    // console.log("Token:", req.cookies?.token);
+    // console.log("JWT Secret:", !!process.env.JWT_SECRET);
 
-    console.log("Origin:", req.headers.origin);
-    console.log("Cookie Header:", req.headers.cookie);
+    // console.log("Origin:", req.headers.origin);
+    // console.log("Cookie Header:", req.headers.cookie);
 
     if (!token) {
         return res.status(401).json({

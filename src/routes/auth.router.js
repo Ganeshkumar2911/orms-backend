@@ -10,6 +10,8 @@ router.post('/login', authController.loginUser)
 router.post('/logout', authController.logoutUser)
 router.get('/me', authMiddleware.authUser , authController.getUser)
 
+router.post('/save-fcm-token', authMiddleware.authUser , authController.saveFCMToken)
+
 
 // router.get(
 //     '/test-admin',

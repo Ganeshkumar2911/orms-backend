@@ -2,6 +2,7 @@ const  orderModel = require("../models/order.model");
 const partyModel = require("../models/party.model");
 const transportModel = require("../models/transport.model");
 const productModel = require("../models/product.model");
+const sendNotification = require("../utils/sendNotification");
 
 async function createOrder(req, res) {
 
@@ -77,6 +78,12 @@ async function createOrder(req, res) {
         transport,
         items,
         createdBy: req.user.id,
+    });
+
+    await sendNotification({
+        roles: ["deepak_admin"],
+        title: "New Order Created",
+        body: `Order ${order.orderNumber} has been created`,
     });
 
     res.status(201).json({
@@ -200,6 +207,15 @@ async function approveOrder(req, res) {
 
     await order.save();
 
+    await sendNotification({
+        roles: [
+            "deepak_staff",
+            "naveen_admin"
+        ],
+        title: "Order Approved",
+        body: `Order ${order.orderNumber} has been approved`,
+    });
+
     res.status(200).json({
         message: "Order approved successfully",
         order
@@ -229,6 +245,16 @@ async function executeOrder(req, res) {
     order.executedAt = new Date();
 
     await order.save();
+
+    await sendNotification({
+        roles: [
+            "deepak_staff",
+            "deepak_admin",
+            "naveen_staff"
+        ],
+        title: "Order Executed",
+        body: `Order ${order.orderNumber} has been executed`,
+    });
 
     res.status(200).json({
         message: "Order executed successfully",
@@ -290,6 +316,16 @@ async function dispatchOrder(req, res) {
 
     if (isCompleted) {
         order.status = "COMPLETED";
+
+        await sendNotification({
+            roles: [
+                "deepak_staff",
+                "deepak_admin",
+                "naveen_admin"
+            ],
+            title: "Order Completed",
+            body: `Order ${order.orderNumber} has been completed`,
+        });
     }
     // } else {
     //     order.status = "PARTIALLY_DISPATCHED";
@@ -298,6 +334,16 @@ async function dispatchOrder(req, res) {
     order.lastDispatchedAt = new Date();
 
     await order.save();
+
+    await sendNotification({
+        roles: [
+            "deepak_staff",
+            "deepak_admin",
+            "naveen_admin"
+        ],
+        title: "Order Dispatched",
+        body: `Order ${order.orderNumber} has been dispatched`,
+    });
 
     res.status(200).json({
         message: "Order dispatched successfully",
