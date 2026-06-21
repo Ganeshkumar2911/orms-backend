@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon server.js",
-    "seed": "node src/seed/seed.users.js"
+    "seed": "node src/seed/seed.users.js",
+    "build": "echo 'Build completed'"
   },
   "keywords": [],
   "author": "",
