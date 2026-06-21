@@ -25,6 +25,7 @@ async function sendNotification({
             webpush: {
                 notification: {
                     icon: `${process.env.FRONTEND_URL}/icon-512.png`,
+                    badge: `${process.env.FRONTEND_URL}/badge.png`,
                 },
                 fcmOptions: {
                     link: `${process.env.FRONTEND_URL}${path}`,

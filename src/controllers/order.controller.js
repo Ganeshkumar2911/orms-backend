@@ -82,7 +82,7 @@ async function createOrder(req, res) {
 
     await sendNotification({
         roles: ["deepak_admin"],
-        title: "New Order Created",
+        title: "📦 New Order Created",
         body: `Order ${order.orderNumber} has been created`,
     });
 
@@ -212,7 +212,7 @@ async function approveOrder(req, res) {
             "deepak_staff",
             "naveen_admin"
         ],
-        title: "Order Approved",
+        title: "🔔 Order Approved",
         body: `Order ${order.orderNumber} has been approved`,
     });
 
@@ -323,7 +323,7 @@ async function dispatchOrder(req, res) {
                 "deepak_admin",
                 "naveen_admin"
             ],
-            title: "Order Completed",
+            title: "✅ Order Completed",
             body: `Order ${order.orderNumber} has been completed`,
         });
     }
@@ -341,7 +341,7 @@ async function dispatchOrder(req, res) {
             "deepak_admin",
             "naveen_admin"
         ],
-        title: "Order Dispatched",
+        title: "Order Dispatched 🚛",
         body: `Order ${order.orderNumber} has been dispatched`,
     });
 
